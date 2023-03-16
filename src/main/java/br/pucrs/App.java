@@ -19,37 +19,39 @@ public class App
 		App.benchmark(1_048_576);
 	}
 
-	public static long[] randomVector(int size){
-		long[] vec = new long[size];
-		int bound = size * 5;
+	public static List<Integer> randomList(int size){
+		List<Integer> list = new ArrayList<>(size);
 		Random random = new Random();
+		int bound = size * 5;
 
-		for(int i = 0; i < size - 1; i++){
-			vec[i] = random.nextInt(bound);
+		for(int _i = 0; _i < size; _i++){
+			list.add(random.nextInt(bound));
 		}
 
-		return vec;
+		return list;
 	}
 
-	public static long maxVal1(long vec[], int n) {
-		long max = vec[0];
+	public static Integer maxVal1(List<Integer> list) {
+		Integer max = list.get(0);
 
-		for (int i = 1; i < n; i++) {
-			if( vec[i] > max ) {
-				max = vec[i];
+		for (Integer x : list) {
+			if (x > max) {
+				max = x;
 			}
 		}
 
 		return max;
 	}
 
-	public static long maxVal2(long vec[], int start, int end) {
+	public static Integer maxVal2(
+		List<Integer> list, Integer start, Integer end
+	) {
 		if (end - start <= 1) {
-			return Math.max(vec[start], vec[end]);
+			return Math.max(list.get(start), list.get(end));
 		} else {
 			int m = (start + end) / 2;
-			long v1 = maxVal2(vec, start, m);
-			long v2 = maxVal2(vec, m + 1, end);
+			int v1 = maxVal2(list, start, m);
+			int v2 = maxVal2(list, m + 1, end);
 			return Math.max(v1, v2);
 		}
 	}
@@ -103,10 +105,10 @@ public class App
 	private static void benchmark(int size) {
 		System.out.println("Size: " + size + "\n");
 
-		long[] vec = randomVector(size);
+		List<Integer> list = randomList(size);
 
 		App.resetTimer();
-		maxVal1(vec, size);
+		maxVal1(list);
 		double time = App.stopTimer();
 
 		System.out.println(
@@ -114,7 +116,7 @@ public class App
 		);
 
 		App.resetTimer();
-		maxVal2(vec, 0, size - 1);
+		maxVal2(list, 0, size - 1);
 		time = App.stopTimer();
 
 		System.out.println(
