@@ -60,19 +60,19 @@ public class App
 	 * Sorts a list of comparable elements using the merge sort algorithm.
 	 *
 	 * @param <T> the type of elements in the list
-	 * @param v the list of elements to sort
-	 * @return a new list with the elements from v, sorted in ascending order
+	 * @param list the list of elements to sort
+	 * @return a new list with the elements from list in ascending order
 	*/
-	public static <T extends Comparable<T>> List<T> mergeSort(List<T> v) {
-		if (v.size() < 2) {
-			return v;
+	public static <T extends Comparable<T>> List<T> mergeSort(List<T> list) {
+		if (list.size() < 2) {
+			return list;
 		}
 
-		List<T> a = mergeSort(v.subList(0, v.size() / 2));
-		List<T> b = mergeSort(v.subList(v.size() / 2, v.size()));
+		List<T> a = mergeSort(list.subList(0, list.size() / 2));
+		List<T> b = mergeSort(list.subList(list.size() / 2, list.size()));
 
 		// Merge both arrays.
-		List<T> res = new ArrayList<>(v.size());
+		List<T> res = new ArrayList<>(list.size());
 		int i = 0;
 		int j = 0;
 
