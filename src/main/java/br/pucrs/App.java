@@ -104,24 +104,25 @@ public class App
 
 	private static void benchmark(int size) {
 		System.out.println("Size: " + size + "\n");
-
 		List<Integer> list = randomList(size);
 
+		// Benchmarks max without divide and conquer.
 		App.resetTimer();
 		maxVal1(list);
 		double time = App.stopTimer();
+		System.out.println("max (no divide and conquer): " + time + " ms");
 
-		System.out.println(
-			"max (no divide and conquer): " + time + " ms"
-		);
-
+		// Benchmarks max with divide and conquer.
 		App.resetTimer();
 		maxVal2(list, 0, size - 1);
 		time = App.stopTimer();
+		System.out.println("max (with divide and conquer): " + time + " ms");
 
-		System.out.println(
-			"max (with divide and conquer): " + time + " ms"
-		);
+		// Benchmarks merge sort.
+		App.resetTimer();
+		mergeSort(list);
+		time = App.stopTimer();
+		System.out.println("merge sort: " + time + " ms");
 
 		System.out.println("\n");
 	}
