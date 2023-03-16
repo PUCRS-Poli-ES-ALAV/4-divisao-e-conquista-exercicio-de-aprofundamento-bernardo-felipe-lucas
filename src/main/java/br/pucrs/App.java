@@ -7,29 +7,16 @@ import java.util.Random;
 
 public class App
 {
+	/**
+	 * Timer used for benchmarking, in ns.
+	 * Should not be read between resetTimer and stopTimer.
+	 */
+	private static long timer;
+
 	public static void main(String[] args) {
-		int size = 1048576;
-		long[] vec = randomVector(size);
-
-		long start = System.currentTimeMillis();
-		maxVal1(vec, size);
-		long finish = System.currentTimeMillis();
-		long total = finish - start;
-
-		System.out.println(
-			"O vetor de tamanho " + size + " sem divisao e conquista leva "
-			+ total + " de milisegundos para executar\n"
-		);
-
-		start = System.currentTimeMillis();
-		maxVal2(vec, 0, size - 1);
-		finish = System.currentTimeMillis();
-		total = finish - start;
-
-		System.out.println(
-			"O vetor de tamanho " + size + " com divisao e conquista leva "
-			+ total + " milisegundos para executar"
-		);
+		App.benchmark(32);
+		App.benchmark(2048);
+		App.benchmark(1_048_576);
 	}
 
 	public static long[] randomVector(int size){
@@ -111,5 +98,48 @@ public class App
 		}
 
 		return res;
+	}
+
+	private static void benchmark(int size) {
+		System.out.println("Size: " + size + "\n");
+
+		long[] vec = randomVector(size);
+
+		App.resetTimer();
+		maxVal1(vec, size);
+		double time = App.stopTimer();
+
+		System.out.println(
+			"max (no divide and conquer): " + time + " ms"
+		);
+
+		App.resetTimer();
+		maxVal2(vec, 0, size - 1);
+		time = App.stopTimer();
+
+		System.out.println(
+			"max (with divide and conquer): " + time + " ms"
+		);
+
+		System.out.println("\n");
+	}
+
+	/**
+	 * Resets the class timer.
+	 * It then should not be read before stopTimer is called.
+	 */
+	private static void resetTimer() {
+		App.timer = System.nanoTime();
+	}
+
+	/**
+	 * Stops the class timer, storing the time elapsed in ns
+	 * since it was last reset inside the field.
+	 *
+	 * @return the time elapsed in ms
+	 */
+	private static double stopTimer() {
+		App.timer = System.nanoTime() - App.timer;
+		return App.timer / 1e6;
 	}
 }
